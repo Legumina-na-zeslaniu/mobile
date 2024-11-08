@@ -1,7 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:junction_frame/navigation/routing.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
