@@ -8,13 +8,13 @@ import 'package:junction_frame/store/actions/selec_iInventory_type_action.dart';
 import 'package:junction_frame/store/app_state.dart';
 
 class TakeMultipleImagesScreenConnector {
-  final Function(XFile) onDataSelected;
+  final Function(List<XFile>) onDataSelected;
 
   TakeMultipleImagesScreenConnector({required this.onDataSelected});
 
   static TakeMultipleImagesScreenConnector fromStore(Store<AppState> store) {
     return TakeMultipleImagesScreenConnector(onDataSelected: (data) {
-      store.dispatchAndWait(SelectInventoryTypeAction(data: [data]));
+      store.dispatchAndWait(SelectInventoryTypeAction(data: data));
     });
   }
 }

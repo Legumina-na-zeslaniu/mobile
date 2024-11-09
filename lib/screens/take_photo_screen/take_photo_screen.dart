@@ -14,122 +14,118 @@ class TakePhotoScreen extends StatefulWidget {
   const TakePhotoScreen({super.key, required this.cameras});
 
   @override
-  State<TakePhotoScreen> createState() => _TakePhotoScreen();
+  State<TakePhotoScreen> createState() => _TakePhotoScreenState();
 }
 
-class _TakePhotoScreen extends State<TakePhotoScreen> {
+class _TakePhotoScreenState extends State<TakePhotoScreen> {
   CameraController? _cameraController;
   bool _isRearCameraSelected = true;
-
-  @override
-  void dispose() {
-    if (_cameraController != null) _cameraController!.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
     super.initState();
     if (widget.cameras.isNotEmpty) {
-      initCamera(widget.cameras![0]);
+      initCamera(widget.cameras.first);
     }
   }
 
-  Future takePicture() async {
-    if (!_cameraController!.value.isInitialized) {
-      return null;
-    }
-    if (_cameraController!.value.isTakingPicture) {
-      return null;
-    }
-    try {
-      await _cameraController!.setFlashMode(FlashMode.off);
-      XFile picture = await _cameraController!.takePicture();
-      print(picture);
-    } on CameraException catch (e) {
-      debugPrint('Error occured while taking picture: $e');
-      return null;
-    }
-  }
-
-  Future initCamera(CameraDescription cameraDescription) async {
+  Future<void> initCamera(CameraDescription cameraDescription) async {
     _cameraController =
         CameraController(cameraDescription, ResolutionPreset.high);
     try {
-      await _cameraController!.initialize().then((_) {
-        if (!mounted) return;
-        setState(() {});
-      });
-    } on CameraException catch (e) {
-      debugPrint("camera error $e");
+      await _cameraController!.initialize();
+      if (mounted) setState(() {});
+    } catch (e) {
+      debugPrint("Camera initialization error: $e");
+    }
+  }
+
+  Future<void> takePicture() async {
+    if (_cameraController == null ||
+        !_cameraController!.value.isInitialized ||
+        _cameraController!.value.isTakingPicture) {
+      return;
+    }
+
+    try {
+      await _cameraController!.setFlashMode(FlashMode.off);
+      final picture = await _cameraController!.takePicture();
+      print(picture);
+    } catch (e) {
+      debugPrint('Error while taking picture: $e');
     }
   }
 
   void pickImage(Function(XFile) onImagePicked, BuildContext context) async {
-    await CustomImagePicker.pickImage(onImagePicked).then((value) {
+    await CustomImagePicker.pickImage(onImagePicked).then((_) {
       context.goNamed('object-identify');
     });
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, TakePhotoScreenConnector>(
       converter: (store) => TakePhotoScreenConnector.fromStore(store),
-      builder: (BuildContext context, TakePhotoScreenConnector modal) {
+      builder: (context, modal) {
         if (widget.cameras.isEmpty) {
           pickImage(modal.onDataSelected, context);
-
-          return Container();
+          return const SizedBox.shrink();
         }
 
         return Scaffold(
-            body: SafeArea(
-          child: Stack(children: [
-            (_cameraController!.value.isInitialized)
-                ? CameraPreview(_cameraController!)
-                : Container(
-                    color: Colors.black,
-                    child: const Center(child: CircularProgressIndicator())),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.20,
-                  decoration: const BoxDecoration(
+          body: SafeArea(
+            child: Stack(
+              children: [
+                if (_cameraController?.value.isInitialized ?? false)
+                  CameraPreview(_cameraController!)
+                else
+                  const Center(child: CircularProgressIndicator()),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    decoration: const BoxDecoration(
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(24)),
-                      color: Colors.black),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      color: Colors.black,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(
-                            child: IconButton(
-                          padding: EdgeInsets.zero,
-                          iconSize: 30,
+                        IconButton(
                           icon: Icon(
-                              _isRearCameraSelected
-                                  ? CupertinoIcons.switch_camera
-                                  : CupertinoIcons.switch_camera_solid,
-                              color: Colors.white),
+                            _isRearCameraSelected
+                                ? CupertinoIcons.switch_camera
+                                : CupertinoIcons.switch_camera_solid,
+                            color: Colors.white,
+                          ),
                           onPressed: () {
-                            setState(() =>
-                                _isRearCameraSelected = !_isRearCameraSelected);
-                            initCamera(
-                                widget.cameras![_isRearCameraSelected ? 0 : 1]);
+                            setState(() {
+                              _isRearCameraSelected = !_isRearCameraSelected;
+                              initCamera(widget
+                                  .cameras[_isRearCameraSelected ? 0 : 1]);
+                            });
                           },
-                        )),
-                        Expanded(
-                            child: IconButton(
-                          onPressed: takePicture,
-                          iconSize: 50,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
+                        ),
+                        IconButton(
                           icon: const Icon(Icons.circle, color: Colors.white),
-                        )),
-                        const Spacer(),
-                      ]),
-                )),
-          ]),
-        ));
+                          iconSize: 50,
+                          onPressed: takePicture,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
