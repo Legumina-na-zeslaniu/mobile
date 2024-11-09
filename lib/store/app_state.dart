@@ -11,9 +11,11 @@ class AppState {
   final Inventory? selectedInventory;
   final DataLoadState? dataLoadState;
   final String? selectedBuildingId;
+  final List<Inventory>? inventoryList;
 
   AppState(
       {this.selectedInventory,
+      this.inventoryList,
       this.dataLoadState,
       this.selectedBuildingId,
       this.additionalInformationImage,
@@ -21,6 +23,7 @@ class AppState {
 
   static AppState initial() {
     return AppState(
+      inventoryList: [],
       dataLoadState: DataLoadState.initial,
     );
   }
@@ -29,11 +32,13 @@ class AppState {
       {Inventory? selectedInventory,
       final XFile? mainInventoryImage,
       final String? selectedBuildingId,
+      final List<Inventory>? inventoryList,
       final XFile? additionalInformationImage,
       DataLoadState? dataLoadState}) {
     return AppState(
         selectedBuildingId: selectedBuildingId ?? this.selectedBuildingId,
         dataLoadState: dataLoadState ?? this.dataLoadState,
+        inventoryList: inventoryList ?? this.inventoryList,
         selectedInventory: selectedInventory ?? this.selectedInventory,
         mainInventoryImage: mainInventoryImage ?? this.mainInventoryImage,
         additionalInformationImage:

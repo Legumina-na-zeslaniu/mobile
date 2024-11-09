@@ -17,36 +17,3 @@ class MainApp extends StatelessWidget {
     );
   }
 }
-
-
-// hild: InAppWebView(
-//             onProgressChanged:
-//                 (InAppWebViewController inAppWebViewController, int progress) {
-//               // controller.setProgress(progress);
-//             },
-//             onWebViewCreated: (InAppWebViewController inAppWebViewController) {
-//               // controller.setWebViewController(inAppWebViewController);
-//             },
-//             onPermissionRequest: (InAppWebViewController controller,
-//                 PermissionRequest permissionRequest) async {
-//               if (permissionRequest.resources
-//                   .contains(PermissionResourceType.MICROPHONE)) {
-//                 final PermissionStatus permissionStatus =
-//                     await Permission.microphone.request();
-//                 if (permissionStatus.isGranted) {
-//                   return PermissionResponse(
-//                     resources: permissionRequest.resources,
-//                     action: PermissionResponseAction.GRANT,
-//                   );
-//                 } else if (permissionStatus.isDenied) {
-//                   return PermissionResponse(
-//                     resources: permissionRequest.resources,
-//                     action: PermissionResponseAction.DENY,
-//                   );
-//                 }
-//               }
-//               return null;
-//             },
-//             initialUrlRequest:
-//                 URLRequest(url: WebUri.uri(Uri.parse("https://flutter.dev/"))),
-//           ),

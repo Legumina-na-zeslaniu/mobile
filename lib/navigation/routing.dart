@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:go_router/go_router.dart';
 import 'package:junction_frame/screens/accept_inventory_type/accept_inventory_type.dart';
+import 'package:junction_frame/screens/all-inventory-page/all_inventory_page.dart';
 import 'package:junction_frame/screens/home_screen.dart';
 import 'package:junction_frame/screens/multiple_images_verification/multiple_images_verification.dart';
 import 'package:junction_frame/screens/multiple_object_identify/multiple_object_identify.dart';
@@ -9,7 +10,6 @@ import 'package:junction_frame/screens/place_selection_screen/place_selection_sc
 import 'package:junction_frame/screens/select_from_model/select_from_modal_page.dart';
 import 'package:junction_frame/screens/take_photo_screen/additional_take_photo_screen.dart';
 import 'package:junction_frame/screens/take_photo_screen/inventory_take_photo_screen.dart';
-import 'package:junction_frame/screens/take_photo_screen/take_photo_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -18,6 +18,10 @@ final router = GoRouter(
         name: 'SelectFromModalPage',
         path: '/',
         builder: (context, state) => const SelectFromModalPage()),
+    GoRoute(
+        path: '/all-inventory',
+        name: 'all-inventory',
+        builder: (context, state) => const AllInventoryPage()),
     GoRoute(
       name: 'home',
       path: '/home',
