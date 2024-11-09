@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/utils/types/function.dart';
 import 'package:junction_frame/widgets/bottom_container.dart';
+import 'package:junction_frame/widgets/buttons.dart';
 import 'package:junction_frame/widgets/input_item.dart';
 import 'package:junction_frame/widgets/summary_widget/summary_widget_connector.dart';
 
@@ -98,36 +99,19 @@ class _SummaryWidgetState extends State<SummaryWidget> {
           padding: const EdgeInsets.only(left: 20, right: 20),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.orange, width: 2)),
-              child: RawMaterialButton(
-                fillColor: Colors.white,
-                onPressed: () => setState(
-                  () {
-                    isEditing = !isEditing;
-                  },
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: const Text('Change',
-                    style: TextStyle(color: Colors.orange)),
+            LightButton(
+              title: 'Change',
+              onPress: () => setState(
+                () {
+                  isEditing = !isEditing;
+                },
               ),
-            ),
-            SizedBox(
               height: 50,
-              child: RawMaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  fillColor: Colors.orange,
-                  onPressed: () => widget.goFurtherAction(),
-                  child: const Text(
-                    'Next',
-                    style: TextStyle(color: Colors.white),
-                  )),
-            )
+            ),
+            InversedButton(
+                title: "Next",
+                height: 50,
+                onPress: () => widget.goFurtherAction())
           ]),
         )
       ],

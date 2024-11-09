@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:junction_frame/screens/multiple_images_verification/mulitple_images_verification_connector.dart';
 import 'package:junction_frame/store/app_state.dart';
+import 'package:junction_frame/themes/colors.dart';
 import 'package:junction_frame/widgets/bottom_container.dart';
 import 'package:junction_frame/widgets/image_verifier/image_verifier.dart';
 import 'package:junction_frame/widgets/input_item.dart';
@@ -107,7 +108,7 @@ class _MultipleImagesVerificationState
               height: 50,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.orange, width: 2)),
+                  border: Border.all(color: CustomColors.orange, width: 2)),
               child: RawMaterialButton(
                 fillColor: Colors.white,
                 onPressed: () => setState(
@@ -118,7 +119,7 @@ class _MultipleImagesVerificationState
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 child: const Text('Change',
-                    style: TextStyle(color: Colors.orange)),
+                    style: TextStyle(color: CustomColors.orange)),
               ),
             ),
             SizedBox(
@@ -126,7 +127,7 @@ class _MultipleImagesVerificationState
               child: RawMaterialButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
-                  fillColor: Colors.orange,
+                  fillColor: CustomColors.orange,
                   onPressed: () => goNextCallback(),
                   child: const Text(
                     'Next',
@@ -147,7 +148,7 @@ class _MultipleImagesVerificationState
           child: RawMaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              fillColor: Colors.orange,
+              fillColor: CustomColors.orange,
               onPressed: () => setState(() {
                     isAddCommentTriggered = !isAddCommentTriggered;
                   }),

@@ -1,6 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:junction_frame/themes/colors.dart';
+import 'package:junction_frame/widgets/bottom_container.dart';
+import 'package:junction_frame/widgets/buttons.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -30,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                           await availableCameras().then((value) =>
                               context.goNamed('take-photo', extra: value));
                         },
-                        fillColor: Colors.orange,
+                        fillColor: CustomColors.orange,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         child: const Text(
@@ -45,12 +48,50 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  Widget renderBottomDrawer(BuildContext context) {
+    return BottomContainer(children: [
+      const Text(
+        'Location confirmed',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontWeight: FontWeight.w600),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      const Text(
+        'To add an item to the building in your chosen location, take a photo of the item first.',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontWeight: FontWeight.w600),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      SizedBox(
+          height: 50,
+          width: double.infinity,
+          child: InversedButton(
+            title: 'Take a photo',
+            onPress: () async {
+              await availableCameras()
+                  .then((value) => context.goNamed('take-photo', extra: value));
+            },
+          ))
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: renderListOfItems(),
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
+          children: [
+            // SizedBox(
+            //   height: MediaQuery.of(context).size.height,
+            // ),
+            renderBottomDrawer(context),
+          ],
+        ),
       ),
     );
   }

@@ -3,15 +3,16 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:junction_frame/screens/take_photo_screen/take_photo_screen_connector.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/widgets/custom_image_picker.dart';
 
 class TakePhotoScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
+  final String redirectToNamedRoute;
 
-  const TakePhotoScreen({super.key, required this.cameras});
+  const TakePhotoScreen(
+      {super.key, required this.cameras, required this.redirectToNamedRoute});
 
   @override
   State<TakePhotoScreen> createState() => _TakePhotoScreenState();
@@ -58,7 +59,7 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
 
   void pickImage(Function(XFile) onImagePicked, BuildContext context) async {
     await CustomImagePicker.pickImage(onImagePicked).then((_) {
-      context.goNamed('object-identify');
+      context.goNamed(widget.redirectToNamedRoute);
     });
   }
 
