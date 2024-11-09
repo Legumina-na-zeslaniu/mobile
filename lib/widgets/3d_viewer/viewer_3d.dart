@@ -59,8 +59,8 @@ class Viewer3D extends StatelessWidget {
             return null;
           },
           initialUrlRequest: URLRequest(
-              url: WebUri.uri(
-                  Uri.parse("http://localhost:5173${optionalParams ?? ''}"))),
+              url: WebUri.uri(Uri.parse(
+                  "https://junction-front.rabbithole.carrotly.tech${optionalParams ?? ''}"))),
         );
       },
     );

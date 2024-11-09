@@ -16,7 +16,11 @@ class AllInventoryPage extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () => context.pop(),
-                  icon: const Icon(Icons.chevron_left_rounded))
+                  icon: const Icon(Icons.chevron_left_rounded)),
+              const SizedBox(width: 100),
+              const Text(
+                'List of assets',
+              )
             ],
           )
         ],
