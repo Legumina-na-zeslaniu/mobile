@@ -6,6 +6,7 @@ import 'package:graphql_flutter/graphql_flutter.dart' as graphql;
 import 'package:http/http.dart' as http;
 import 'package:junction_frame/api/grqphql_client.dart';
 import 'package:junction_frame/api/queries/images.dart';
+import 'package:junction_frame/api/schemas/inventory.dart';
 import 'package:junction_frame/store/actions/show_loading_action.dart';
 import 'package:junction_frame/store/app_state.dart';
 
@@ -22,8 +23,6 @@ class UploadImagesAction extends ReduxAction<AppState> {
     http.MultipartFile mpf =
         http.MultipartFile.fromBytes('file', await byteData);
 
-    print(mpf);
-
     final graphql.MutationOptions options = graphql.MutationOptions(
       document: graphql.gql(uploadImageQuery),
       variables: {"file": mpf},
@@ -35,10 +34,11 @@ class UploadImagesAction extends ReduxAction<AppState> {
       throw Exception;
     });
 
-    print(result.data);
-
     if (result.data != null) {
-      return state.copyWith(dataLoadState: DataLoadState.loaded);
+      Inventory inventory = Inventory.fromJson(result.data!['classifyObject']);
+
+      return state.copyWith(
+          dataLoadState: DataLoadState.loaded, selectedInventory: inventory);
     }
 
     return state;

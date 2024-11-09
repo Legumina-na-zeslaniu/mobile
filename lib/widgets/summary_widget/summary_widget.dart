@@ -1,5 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:junction_frame/api/schemas/inventory.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/utils/types/function.dart';
 import 'package:junction_frame/widgets/added_picture_widgets/added_pictures_widget.dart';
@@ -21,49 +22,22 @@ class SummaryWidget extends StatefulWidget {
 class _SummaryWidgetState extends State<SummaryWidget> {
   bool isEditing = false;
 
-  Widget renderInputContent(BuildContext context, bool isEditing) {
-    var items = [
-      InputItem(
-        title: 'Equipment name',
-        value: 'Enter equipment name',
+  Widget renderInputContent(
+      BuildContext context, bool isEditing, Inventory inventory) {
+    List<Widget> itemsToRender = [];
+
+    (inventory.properties ?? []).forEach((property) {
+      itemsToRender.add(InputItem(
+        title: property.field,
+        value: property.value,
+        isMultiline: true,
         isEditing: isEditing,
-      ),
-      SizedBox(
+      ));
+
+      itemsToRender.add(const SizedBox(
         height: 15,
-      ),
-      InputItem(
-        title: 'Equipment type',
-        value: 'Health and safety',
-        isEditing: isEditing,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-      InputItem(
-        title: 'Material type',
-        value: 'Metal',
-        isEditing: isEditing,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-      InputItem(
-        title: 'Condition',
-        value: 'Good',
-        isEditing: isEditing,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-      InputItem(
-        title: 'Size',
-        value: 'Huge boi',
-        isEditing: isEditing,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-    ];
+      ));
+    });
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -72,7 +46,7 @@ class _SummaryWidgetState extends State<SummaryWidget> {
           boxShadow: kElevationToShadow[4],
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: Column(
-        children: items,
+        children: itemsToRender,
       ),
     );
   }
@@ -131,7 +105,8 @@ class _SummaryWidgetState extends State<SummaryWidget> {
                 child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(children: [
-                      renderInputContent(context, isEditing),
+                      renderInputContent(
+                          context, isEditing, connector.inventory!),
                       const SizedBox(
                         height: 20,
                       ),

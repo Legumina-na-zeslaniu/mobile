@@ -12,3 +12,17 @@ mutation ClassifyObject($file: Upload!) {
   }
 }
 """;
+
+const Query upsertInventoryQuery = r"""
+mutation UpsertInventory($input: InventoryUpsertInput!) {
+  upsertInventory(input: $input) {
+    id,
+    files,
+    properties {
+      field
+      value
+    }
+    comments
+  }
+}
+""";

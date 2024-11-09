@@ -12,6 +12,7 @@ import 'package:junction_frame/widgets/custom_image_picker.dart';
 import 'package:junction_frame/widgets/image_verifier/imge_verifier_connector.dart';
 import 'package:junction_frame/widgets/text_widgets.dart';
 
+// ignore: must_be_immutable
 class ImageVerifier extends StatelessWidget {
   final bool allowRevalidation;
   final String namedPath;
