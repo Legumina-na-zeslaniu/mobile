@@ -2,8 +2,10 @@ import 'package:camera/camera.dart';
 import 'package:go_router/go_router.dart';
 import 'package:junction_frame/screens/accept_inventory_type/accept_inventory_type.dart';
 import 'package:junction_frame/screens/home_screen.dart';
+import 'package:junction_frame/screens/multiple_object_identify/multiple_object_identify.dart';
 import 'package:junction_frame/screens/object_identify/object_identify.dart';
 import 'package:junction_frame/screens/place_selection_screen/place_selection_screen.dart';
+import 'package:junction_frame/screens/take_multiple_images_screen/take_multiple_images_screen.dart';
 import 'package:junction_frame/screens/take_photo_screen/take_photo_screen.dart';
 
 final router = GoRouter(
@@ -30,6 +32,11 @@ final router = GoRouter(
       builder: (context, state) => const ObjectIdentify(),
     ),
     GoRoute(
+      name: 'multiple-object-identify',
+      path: '/multiple-object-identify',
+      builder: (context, state) => const MultipleObjectIdentify(),
+    ),
+    GoRoute(
       name: 'accept-inventory',
       path: '/accept-inventory',
       builder: (context, state) => const AcceptInventoryType(),
@@ -39,5 +46,15 @@ final router = GoRouter(
       path: '/place-selection',
       builder: (context, state) => const PlaceSelectionScreen(),
     ),
+    GoRoute(
+        name: 'multiple-images',
+        path: '/multiple-images',
+        builder: (context, state) {
+          List<CameraDescription> cameras =
+              state.extra as List<CameraDescription>;
+          return TakeMultipleImagesScreen(
+            cameras: cameras,
+          );
+        }),
   ],
 );

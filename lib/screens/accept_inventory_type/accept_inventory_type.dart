@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:async_redux/async_redux.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:junction_frame/navigation/routing.dart';
@@ -9,13 +12,13 @@ import 'package:junction_frame/widgets/bottom_container.dart';
 class InputItem extends StatelessWidget {
   final String title;
   final String value;
-  final bool isDisabled;
+  final bool isEditing;
 
   const InputItem(
       {super.key,
       required this.title,
       required this.value,
-      this.isDisabled = false});
+      this.isEditing = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class InputItem extends StatelessWidget {
       Text(title),
       TextField(
         controller: controller,
-        enabled: !isDisabled,
+        enabled: isEditing,
         decoration: const InputDecoration(
             labelText: '',
             hintText: '',
@@ -46,12 +49,12 @@ class AcceptInventoryType extends StatefulWidget {
 class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
   bool isEditing = false;
 
-  Widget renderMainContent(BuildContext context) {
+  Widget renderInputContent(BuildContext context, bool isEditing) {
     var items = [
       InputItem(
         title: 'Equipment name',
         value: 'Enter equipment name',
-        isDisabled: true,
+        isEditing: isEditing,
       ),
       SizedBox(
         height: 15,
@@ -59,7 +62,7 @@ class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
       InputItem(
         title: 'Equipment type',
         value: 'Health and safety',
-        isDisabled: true,
+        isEditing: isEditing,
       ),
       SizedBox(
         height: 15,
@@ -67,7 +70,7 @@ class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
       InputItem(
         title: 'Material type',
         value: 'Metal',
-        isDisabled: true,
+        isEditing: isEditing,
       ),
       SizedBox(
         height: 15,
@@ -75,7 +78,7 @@ class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
       InputItem(
         title: 'Condition',
         value: 'Good',
-        isDisabled: true,
+        isEditing: isEditing,
       ),
       SizedBox(
         height: 15,
@@ -83,7 +86,7 @@ class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
       InputItem(
         title: 'Size',
         value: 'Huge boi',
-        isDisabled: true,
+        isEditing: isEditing,
       ),
       SizedBox(
         height: 15,
@@ -130,7 +133,11 @@ class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
                   border: Border.all(color: Colors.orange, width: 2)),
               child: RawMaterialButton(
                 fillColor: Colors.white,
-                onPressed: () => print('aa'),
+                onPressed: () => setState(
+                  () {
+                    isEditing = !isEditing;
+                  },
+                ),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 child: const Text('Change',
@@ -143,7 +150,12 @@ class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   fillColor: Colors.orange,
-                  onPressed: () => context.goNamed('place-selection'),
+                  onPressed: () async {
+                    await availableCameras().then((value) => context.goNamed(
+                          'multiple-images',
+                          extra: value,
+                        ));
+                  },
                   child: const Text(
                     'Next',
                     style: TextStyle(color: Colors.white),
@@ -153,6 +165,22 @@ class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
         )
       ],
     );
+  }
+
+  Widget renderAddedPictures(List<XFile> images) {
+    return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: kElevationToShadow[4],
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
+        child: Column(children: [
+          const Text('Added pictures'),
+          GridView.extent(maxCrossAxisExtent: 200, shrinkWrap: true, children: [
+            ...images.map((image) => Image.file(File(image.path)))
+          ]),
+        ]));
   }
 
   @override
@@ -168,9 +196,19 @@ class _AcceptInventoryTypeState extends State<AcceptInventoryType> {
           child: Stack(
             children: [
               SingleChildScrollView(
-                  child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Column(children: [renderMainContent(context)]))),
+                child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(children: [
+                      renderInputContent(context, isEditing),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      renderAddedPictures(connector.images),
+                      const SizedBox(
+                        height: 180,
+                      )
+                    ])),
+              ),
               renderBottomContainer(),
             ],
           ),

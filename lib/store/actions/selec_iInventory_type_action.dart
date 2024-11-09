@@ -3,14 +3,17 @@ import 'package:camera/camera.dart';
 import 'package:junction_frame/store/app_state.dart';
 
 class SelectInventoryTypeAction extends ReduxAction<AppState> {
-  final XFile data;
+  final List<XFile> data;
 
   SelectInventoryTypeAction({required this.data});
 
   @override
   AppState reduce() {
     return state.copyWith(
-      selectedInventoryTypeImage: data,
+      selectedInventoryTypeImage: [
+        ...store.state.selectedInventoryTypeImages,
+        ...data
+      ],
     );
   }
 }

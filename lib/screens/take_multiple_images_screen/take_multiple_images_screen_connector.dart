@@ -7,13 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:junction_frame/store/actions/selec_iInventory_type_action.dart';
 import 'package:junction_frame/store/app_state.dart';
 
-class TakePhotoScreenConnector {
-  final Function(XFile file) onDataSelected;
+class TakeMultipleImagesScreenConnector {
+  final Function(XFile) onDataSelected;
 
-  TakePhotoScreenConnector({required this.onDataSelected});
+  TakeMultipleImagesScreenConnector({required this.onDataSelected});
 
-  static TakePhotoScreenConnector fromStore(Store<AppState> store) {
-    return TakePhotoScreenConnector(onDataSelected: (data) {
+  static TakeMultipleImagesScreenConnector fromStore(Store<AppState> store) {
+    return TakeMultipleImagesScreenConnector(onDataSelected: (data) {
       store.dispatchAndWait(SelectInventoryTypeAction(data: [data]));
     });
   }

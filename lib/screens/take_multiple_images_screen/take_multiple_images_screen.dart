@@ -4,20 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:junction_frame/screens/take_multiple_images_screen/take_multiple_images_screen_connector.dart';
 import 'package:junction_frame/screens/take_photo_screen/take_photo_screen_connector.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/widgets/custom_image_picker.dart';
 
-class TakePhotoScreen extends StatefulWidget {
+class TakeMultipleImagesScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
 
-  const TakePhotoScreen({super.key, required this.cameras});
+  const TakeMultipleImagesScreen({super.key, required this.cameras});
 
   @override
-  State<TakePhotoScreen> createState() => _TakePhotoScreen();
+  State<TakeMultipleImagesScreen> createState() =>
+      _TakeMultipleImagesScreenState();
 }
 
-class _TakePhotoScreen extends State<TakePhotoScreen> {
+class _TakeMultipleImagesScreenState extends State<TakeMultipleImagesScreen> {
   CameraController? _cameraController;
   bool _isRearCameraSelected = true;
 
@@ -31,7 +33,7 @@ class _TakePhotoScreen extends State<TakePhotoScreen> {
   void initState() {
     super.initState();
     if (widget.cameras.isNotEmpty) {
-      initCamera(widget.cameras![0]);
+      initCamera(widget.cameras[0]);
     }
   }
 
@@ -66,16 +68,16 @@ class _TakePhotoScreen extends State<TakePhotoScreen> {
   }
 
   void pickImage(Function(XFile) onImagePicked, BuildContext context) async {
-    await CustomImagePicker.pickImage(onImagePicked).then((value) {
-      context.goNamed('object-identify');
-    });
+    await CustomImagePicker.pickImage(onImagePicked);
+
+    context.goNamed('multiple-object-identify');
   }
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, TakePhotoScreenConnector>(
-      converter: (store) => TakePhotoScreenConnector.fromStore(store),
-      builder: (BuildContext context, TakePhotoScreenConnector modal) {
+    return StoreConnector<AppState, TakeMultipleImagesScreenConnector>(
+      converter: (store) => TakeMultipleImagesScreenConnector.fromStore(store),
+      builder: (BuildContext context, TakeMultipleImagesScreenConnector modal) {
         if (widget.cameras.isEmpty) {
           pickImage(modal.onDataSelected, context);
 
