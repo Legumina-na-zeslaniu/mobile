@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junction_frame/store/app_state.dart';
-import 'package:junction_frame/themes/colors.dart';
 import 'package:junction_frame/widgets/bottom_container.dart';
 import 'package:junction_frame/widgets/buttons.dart';
 import 'package:junction_frame/widgets/custom_image_picker.dart';
