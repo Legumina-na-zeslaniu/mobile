@@ -1,14 +1,22 @@
 class Inventory {
-  final String name;
-  final String type;
-  final String materialType;
-  final String condition;
-  final String size;
+  final String id;
+  final String comments;
+  final List<Properties> properties;
 
-  Inventory(
-      {required this.name,
-      required this.type,
-      required this.materialType,
-      required this.condition,
-      required this.size});
+  Inventory(this.id, this.comments, this.properties);
+
+  static Inventory fromJson(Map<String, dynamic> json) {
+    return Inventory(json["id"], json["comments"], []);
+  }
+}
+
+class Properties {
+  final String field;
+  final String value;
+
+  Properties({required this.field, required this.value});
+
+  static Properties fromJson(Map<String, dynamic> json) {
+    return Properties(field: json['field'], value: json['value']);
+  }
 }

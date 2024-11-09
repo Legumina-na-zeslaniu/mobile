@@ -1,18 +1,14 @@
-import 'package:async_redux/async_redux.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:junction_frame/screens/take_photo_screen/take_photo_screen_connector.dart';
-import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/widgets/custom_image_picker.dart';
 
 class TakePhotoScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
-  final String redirectToNamedRoute;
+  final Function(XFile) onImageSubmitted;
 
   const TakePhotoScreen(
-      {super.key, required this.cameras, required this.redirectToNamedRoute});
+      {super.key, required this.cameras, required this.onImageSubmitted});
 
   @override
   State<TakePhotoScreen> createState() => _TakePhotoScreenState();
@@ -57,10 +53,8 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
     }
   }
 
-  void pickImage(Function(XFile) onImagePicked, BuildContext context) async {
-    await CustomImagePicker.pickImage(onImagePicked).then((_) {
-      context.goNamed(widget.redirectToNamedRoute);
-    });
+  void pickImage(Function(XFile) onImagePicked) async {
+    await CustomImagePicker.pickImage((file) => widget.onImageSubmitted(file));
   }
 
   @override
@@ -71,63 +65,57 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, TakePhotoScreenConnector>(
-      converter: (store) => TakePhotoScreenConnector.fromStore(store),
-      builder: (context, modal) {
-        if (widget.cameras.isEmpty) {
-          pickImage(modal.onDataSelected, context);
-          return const SizedBox.shrink();
-        }
+    if (widget.cameras.isEmpty) {
+      pickImage((img) => widget.onImageSubmitted(img));
+      return const SizedBox.shrink();
+    }
 
-        return Scaffold(
-          body: SafeArea(
-            child: Stack(
-              children: [
-                if (_cameraController?.value.isInitialized ?? false)
-                  CameraPreview(_cameraController!)
-                else
-                  const Center(child: CircularProgressIndicator()),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    decoration: const BoxDecoration(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(24)),
-                      color: Colors.black,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            _isRearCameraSelected
-                                ? CupertinoIcons.switch_camera
-                                : CupertinoIcons.switch_camera_solid,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isRearCameraSelected = !_isRearCameraSelected;
-                              initCamera(widget
-                                  .cameras[_isRearCameraSelected ? 0 : 1]);
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.circle, color: Colors.white),
-                          iconSize: 50,
-                          onPressed: takePicture,
-                        ),
-                      ],
-                    ),
-                  ),
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            if (_cameraController?.value.isInitialized ?? false)
+              CameraPreview(_cameraController!)
+            else
+              const Center(child: CircularProgressIndicator()),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  color: Colors.black,
                 ),
-              ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        _isRearCameraSelected
+                            ? CupertinoIcons.switch_camera
+                            : CupertinoIcons.switch_camera_solid,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isRearCameraSelected = !_isRearCameraSelected;
+                          initCamera(
+                              widget.cameras[_isRearCameraSelected ? 0 : 1]);
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.circle, color: Colors.white),
+                      iconSize: 50,
+                      onPressed: takePicture,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

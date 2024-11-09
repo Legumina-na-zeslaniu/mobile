@@ -3,31 +3,37 @@ import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junction_frame/api/schemas/inventory.dart';
 
+enum DataLoadState { loading, loaded, loadRequest, processed, initial }
+
 class AppState {
-  final List<XFile> selectedInventoryTypeImages;
-  final Inventory selectedInventory;
+  final XFile? mainInventoryImage;
+  final XFile? additionalInformationImage;
+  final Inventory? selectedInventory;
+  final DataLoadState? dataLoadState;
 
   AppState(
-      {required this.selectedInventoryTypeImages,
-      required this.selectedInventory});
+      {this.selectedInventory,
+      this.dataLoadState,
+      this.additionalInformationImage,
+      this.mainInventoryImage});
 
   static AppState initial() {
     return AppState(
-        selectedInventoryTypeImages: [],
-        selectedInventory: Inventory(
-            name: 'Fire Extenguisher',
-            type: 'Health and safety',
-            materialType: 'Metal',
-            condition: 'Good',
-            size: 'Huge boi'));
+      dataLoadState: DataLoadState.initial,
+    );
   }
 
   AppState copyWith(
-      {List<XFile>? selectedInventoryTypeImage, Inventory? selectedInventory}) {
+      {Inventory? selectedInventory,
+      final XFile? mainInventoryImage,
+      final XFile? additionalInformationImage,
+      DataLoadState? dataLoadState}) {
     return AppState(
+        dataLoadState: dataLoadState ?? this.dataLoadState,
         selectedInventory: selectedInventory ?? this.selectedInventory,
-        selectedInventoryTypeImages:
-            selectedInventoryTypeImage ?? this.selectedInventoryTypeImages);
+        mainInventoryImage: mainInventoryImage ?? this.mainInventoryImage,
+        additionalInformationImage:
+            additionalInformationImage ?? this.additionalInformationImage);
   }
 }
 

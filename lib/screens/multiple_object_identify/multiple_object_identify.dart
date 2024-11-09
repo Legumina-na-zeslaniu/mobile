@@ -10,6 +10,7 @@ class MultipleObjectIdentify extends StatelessWidget {
     return ImageVerifier(
         allowRevalidation: true,
         namedPath: 'multiple-images-verification',
+        onSubmit: (file) => {},
         bottomContainerTexts: const [
           HeaderText('If you want to upload this photo choose “Next”'),
           SizedBox(

@@ -7,6 +7,8 @@ import 'package:junction_frame/screens/multiple_object_identify/multiple_object_
 import 'package:junction_frame/screens/object_identify/object_identify.dart';
 import 'package:junction_frame/screens/place_selection_screen/place_selection_screen.dart';
 import 'package:junction_frame/screens/select_from_model/select_from_modal_page.dart';
+import 'package:junction_frame/screens/take_photo_screen/additional_take_photo_screen.dart';
+import 'package:junction_frame/screens/take_photo_screen/inventory_take_photo_screen.dart';
 import 'package:junction_frame/screens/take_photo_screen/take_photo_screen.dart';
 
 final router = GoRouter(
@@ -27,9 +29,8 @@ final router = GoRouter(
         builder: (context, state) {
           List<CameraDescription> cameras =
               state.extra as List<CameraDescription>;
-          return TakePhotoScreen(
+          return InventoryTakePhotoScreen(
             cameras: cameras,
-            redirectToNamedRoute: 'object-identify',
           );
         }),
     GoRoute(
@@ -58,9 +59,8 @@ final router = GoRouter(
         builder: (context, state) {
           List<CameraDescription> cameras =
               state.extra as List<CameraDescription>;
-          return TakePhotoScreen(
+          return AdditionalTakePhotoScreen(
             cameras: cameras,
-            redirectToNamedRoute: 'multiple-object-identify',
           );
         }),
     GoRoute(

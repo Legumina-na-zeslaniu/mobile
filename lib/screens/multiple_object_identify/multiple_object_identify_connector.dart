@@ -4,17 +4,17 @@ import 'package:junction_frame/store/actions/upload_images_action.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/widgets/image_verifier/imge_verifier_connector.dart';
 
-class ObjectIdentifyConnector {
+class MultipleObjectIdentifyConnector {
   final XFile? selectedInventoryTypeImage;
   final Function(XFile, Function()) onSubmit;
-  ObjectIdentifyConnector(
+  MultipleObjectIdentifyConnector(
       {required this.selectedInventoryTypeImage, required this.onSubmit});
 
   static fromStore(
     Store<AppState> store,
   ) {
-    return ObjectIdentifyConnector(
-        selectedInventoryTypeImage: store.state.mainInventoryImage,
+    return MultipleObjectIdentifyConnector(
+        selectedInventoryTypeImage: store.state.additionalInformationImage,
         onSubmit: (file, callback) => store
             .dispatchAndWait(UploadImagesAction(file: file))
             .then((value) => {callback.call()}));

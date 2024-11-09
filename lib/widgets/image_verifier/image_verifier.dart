@@ -16,12 +16,14 @@ class ImageVerifier extends StatelessWidget {
   final bool allowRevalidation;
   final String namedPath;
   List<Widget>? bottomContainerTexts;
+  Function(XFile) onSubmit;
 
   ImageVerifier(
       {super.key,
       this.allowRevalidation = false,
       required this.namedPath,
-      this.bottomContainerTexts});
+      this.bottomContainerTexts,
+      required this.onSubmit});
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +37,11 @@ class ImageVerifier extends StatelessWidget {
       );
     }
 
-    void pickImages(
-        Function(List<XFile>) onImagesPicked, BuildContext context) async {
-      await CustomImagePicker.pickImages(onImagesPicked).then((value) {
-        context.goNamed(namedPath);
-      });
+    void pickImages() async {
+      await CustomImagePicker.pickImage((image) => onSubmit(image));
     }
 
-    Widget renderBottomContainer(
-        Function(List<XFile>, BuildContext) onImagesSelected) {
+    Widget renderBottomContainer(Function() callback, XFile selectedFile) {
       return BottomContainer(
         children: [
           ...(bottomContainerTexts == null)
@@ -63,15 +61,14 @@ class ImageVerifier extends StatelessWidget {
                     LightButton(
                       borderRadius: 40,
                       title: '+',
-                      onPress: () => pickImages(
-                          (files) => onImagesSelected(files, context), context),
+                      onPress: () => pickImages(),
                       height: 50,
                       width: 50,
                     ),
                   InversedButton(
                       title: "Next",
                       height: 50,
-                      onPress: () => context.goNamed(namedPath))
+                      onPress: () => onSubmit(selectedFile))
                 ]),
           )
         ],
@@ -86,7 +83,8 @@ class ImageVerifier extends StatelessWidget {
         bottom: false,
         child: Stack(
           children: [
-            renderBottomContainer(connector.onMultiImagesSelect),
+            renderBottomContainer(() => context.goNamed(namedPath),
+                connector.selectedInventoryTypeImage),
             renderImage(connector.selectedInventoryTypeImage),
           ],
         ),

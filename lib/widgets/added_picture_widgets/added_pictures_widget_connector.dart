@@ -9,6 +9,9 @@ class AddedPicturesWidgetConnector {
 
   static AddedPicturesWidgetConnector fromStore(Store<AppState> store) {
     return AddedPicturesWidgetConnector(
-        images: store.state.selectedInventoryTypeImages);
+        images: [
+      store.state.additionalInformationImage,
+      store.state.mainInventoryImage
+    ].where((e) => e != null).map((e) => e as XFile).toList());
   }
 }

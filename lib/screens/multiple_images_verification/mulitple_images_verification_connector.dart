@@ -4,15 +4,15 @@ import 'package:junction_frame/api/schemas/inventory.dart';
 import 'package:junction_frame/store/app_state.dart';
 
 class MulitpleImagesVerificationConnector {
-  final Inventory inventory;
-  final List<XFile> images;
+  final Inventory? inventory;
+  final XFile? additionalInformationImages;
 
   MulitpleImagesVerificationConnector(
-      {required this.inventory, required this.images});
+      {required this.inventory, required this.additionalInformationImages});
 
   static MulitpleImagesVerificationConnector fromStore(Store<AppState> store) {
     return MulitpleImagesVerificationConnector(
         inventory: store.state.selectedInventory,
-        images: store.state.selectedInventoryTypeImages);
+        additionalInformationImages: store.state.additionalInformationImage);
   }
 }

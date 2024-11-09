@@ -28,7 +28,7 @@ class _PlaceSelectionScreenState extends State<PlaceSelectionScreen> {
           Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: InversedButton(
-                  title: 'Homez',
+                  title: 'Home',
                   height: 50,
                   width: double.infinity,
                   onPress: () => context.goNamed('SelectFromModalPage')))
