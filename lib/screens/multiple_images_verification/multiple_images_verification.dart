@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:junction_frame/api/schemas/inventory.dart';
 import 'package:junction_frame/screens/multiple_images_verification/mulitple_images_verification_connector.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/themes/colors.dart';
@@ -11,7 +12,9 @@ import 'package:junction_frame/widgets/input_item.dart';
 import 'package:junction_frame/widgets/text_widgets.dart';
 
 class MultipleImagesVerification extends StatefulWidget {
-  const MultipleImagesVerification({super.key});
+  MultipleImagesVerification({super.key});
+
+  final TextEditingController commentAddController = TextEditingController();
 
   @override
   State<MultipleImagesVerification> createState() =>
@@ -23,49 +26,22 @@ class _MultipleImagesVerificationState
   bool isEditing = false;
   bool isAddCommentTriggered = false;
 
-  Widget renderInputContent(BuildContext context, bool isEditing) {
-    var items = [
-      InputItem(
-        title: 'Equipment name',
-        value: 'Enter equipment name',
+  Widget renderInputContent(
+      BuildContext context, bool isEditing, Inventory inventory) {
+    List<Widget> itemsToRender = [];
+
+    (inventory.properties ?? []).forEach((property) {
+      itemsToRender.add(InputItem(
+        title: property.field,
+        value: property.value,
+        isMultiline: true,
         isEditing: isEditing,
-      ),
-      SizedBox(
+      ));
+
+      itemsToRender.add(const SizedBox(
         height: 15,
-      ),
-      InputItem(
-        title: 'Equipment type',
-        value: 'Health and safety',
-        isEditing: isEditing,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-      InputItem(
-        title: 'Material type',
-        value: 'Metal',
-        isEditing: isEditing,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-      InputItem(
-        title: 'Condition',
-        value: 'Good',
-        isEditing: isEditing,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-      InputItem(
-        title: 'Size',
-        value: 'Huge boi',
-        isEditing: isEditing,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-    ];
+      ));
+    });
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -74,7 +50,7 @@ class _MultipleImagesVerificationState
           boxShadow: kElevationToShadow[4],
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: Column(
-        children: items,
+        children: itemsToRender,
       ),
     );
   }
@@ -138,9 +114,10 @@ class _MultipleImagesVerificationState
           color: Colors.white,
           boxShadow: kElevationToShadow[4],
           borderRadius: const BorderRadius.all(Radius.circular(20))),
-      child: const InputItem(
+      child: InputItem(
         isMultiline: true,
         title: 'Comments',
+        controller: widget.commentAddController,
         isEditing: true,
         value:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
@@ -166,7 +143,8 @@ class _MultipleImagesVerificationState
                 child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(children: [
-                      renderInputContent(context, isEditing),
+                      renderInputContent(
+                          context, isEditing, connector.inventory!),
                       const SizedBox(
                         height: 20,
                       ),
@@ -181,6 +159,7 @@ class _MultipleImagesVerificationState
                     ])),
               ),
               renderBottomContainer(() {
+                connector.upsert(widget.commentAddController.value.text);
                 context.goNamed('place-selection');
               }),
             ],

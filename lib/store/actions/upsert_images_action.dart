@@ -8,28 +8,25 @@ import 'package:junction_frame/api/grqphql_client.dart';
 import 'package:junction_frame/api/queries/images.dart';
 import 'package:junction_frame/api/schemas/inventory.dart';
 import 'package:junction_frame/store/actions/show_loading_action.dart';
+import 'package:junction_frame/store/actions/upload_images_action.dart';
 import 'package:junction_frame/store/app_state.dart';
 
 class UpsertImagesAction extends ReduxAction<AppState> {
-  final XFile additionalInformationData;
+  final String comments;
 
-  UpsertImagesAction({required this.additionalInformationData});
+  UpsertImagesAction({required this.comments});
 
   @override
   Future<AppState> reduce() async {
     store.dispatch(ShowLoadingAction(dataLoadState: DataLoadState.loadRequest));
 
     Inventory selectedInventory = store.state.selectedInventory!;
-    var b0 = store.state.mainInventoryImage!.readAsBytes();
-    var b1 = additionalInformationData.readAsBytes();
-    http.MultipartFile mpf0 = http.MultipartFile.fromBytes('file', await b0);
-    http.MultipartFile mpf1 = http.MultipartFile.fromBytes('files', await b1);
 
     final graphql.MutationOptions options = graphql.MutationOptions(
       document: graphql.gql(upsertInventoryQuery),
       variables: {
-        "files": mpf0,
-        "properties": store.state.selectedInventory!.properties?.map((e) {
+        "comments": comments,
+        "properties": selectedInventory.properties!.map((e) {
           return {
             "field": e.field,
             "value": e.value,

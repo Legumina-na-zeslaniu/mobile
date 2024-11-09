@@ -7,17 +7,19 @@ class InputItem extends StatelessWidget {
   final String value;
   final bool isEditing;
   final bool isMultiline;
+  final TextEditingController? controller;
 
   const InputItem(
       {super.key,
       this.isMultiline = false,
       required this.title,
       required this.value,
+      this.controller,
       this.isEditing = false});
 
   @override
   Widget build(BuildContext context) {
-    var controller = TextEditingController(text: value);
+    var controller = this.controller ?? TextEditingController(text: value);
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Text(

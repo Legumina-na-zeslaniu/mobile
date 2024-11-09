@@ -34,12 +34,59 @@ class UploadImagesAction extends ReduxAction<AppState> {
       throw Exception;
     });
 
-    print(result);
+    print("Fetched inventory: $result");
+
     if (result.data != null) {
       Inventory inventory = Inventory.fromJson(result.data!['classifyObject']);
 
       return state.copyWith(
           dataLoadState: DataLoadState.loaded, selectedInventory: inventory);
+    }
+
+    return state;
+  }
+}
+
+class UploadImagesSecondAction extends ReduxAction<AppState> {
+  final XFile file;
+
+  UploadImagesSecondAction({required this.file});
+
+  @override
+  Future<AppState> reduce() async {
+    store.dispatch(ShowLoadingAction(dataLoadState: DataLoadState.loadRequest));
+
+    var byteData = file.readAsBytes();
+    http.MultipartFile mpf =
+        http.MultipartFile.fromBytes('file', await byteData);
+
+    final graphql.MutationOptions options = graphql.MutationOptions(
+      document: graphql.gql(uploadImageQuery),
+      variables: {"file": mpf},
+    );
+
+    final graphql.QueryResult result = await client
+        .mutate(options)
+        .timeout(const Duration(seconds: 20), onTimeout: () {
+      throw Exception;
+    });
+
+    print("Fetched additional inventory: $result");
+
+    if (result.data != null) {
+      Inventory inventory = Inventory.fromJson(result.data!['classifyObject']);
+
+      var mergedProperties = [
+        ...state.selectedInventory!.properties!,
+        ...inventory.properties!
+      ];
+
+      Inventory inventoryMerged =
+          Inventory(localization: null, properties: mergedProperties);
+
+      return state.copyWith(
+          dataLoadState: DataLoadState.loaded,
+          selectedInventory: inventoryMerged);
     }
 
     return state;
