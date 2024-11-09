@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:junction_frame/screens/api/inventory.dart';
+import 'package:junction_frame/api/schemas/inventory.dart';
 
 class AppState {
   final List<XFile> selectedInventoryTypeImages;

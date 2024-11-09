@@ -15,8 +15,13 @@ import 'package:junction_frame/widgets/text_widgets.dart';
 class ImageVerifier extends StatelessWidget {
   final bool allowRevalidation;
   final String namedPath;
-  const ImageVerifier(
-      {super.key, this.allowRevalidation = false, required this.namedPath});
+  List<Widget>? bottomContainerTexts;
+
+  ImageVerifier(
+      {super.key,
+      this.allowRevalidation = false,
+      required this.namedPath,
+      this.bottomContainerTexts});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,9 @@ class ImageVerifier extends StatelessWidget {
         Function(List<XFile>, BuildContext) onImagesSelected) {
       return BottomContainer(
         children: [
-          ...TextWidgetsUtils.generateHeaderWithSubHedaer(),
+          ...(bottomContainerTexts == null)
+              ? TextWidgetsUtils.generateHeaderWithSubHedaer()
+              : bottomContainerTexts!,
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: Row(

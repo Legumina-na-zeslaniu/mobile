@@ -6,9 +6,11 @@ class InversedButton extends StatelessWidget {
   final double? width;
   final double? height;
   final String title;
+  final bool enabled;
 
   const InversedButton(
       {super.key,
+      this.enabled = true,
       required this.title,
       required this.onPress,
       this.width,
@@ -23,7 +25,7 @@ class InversedButton extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           fillColor: CustomColors.orange,
-          onPressed: () => onPress(),
+          onPressed: !enabled ? null : () => onPress(),
           child: Text(
             title,
             style: const TextStyle(

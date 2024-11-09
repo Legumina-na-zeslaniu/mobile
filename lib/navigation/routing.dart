@@ -6,14 +6,19 @@ import 'package:junction_frame/screens/multiple_images_verification/multiple_ima
 import 'package:junction_frame/screens/multiple_object_identify/multiple_object_identify.dart';
 import 'package:junction_frame/screens/object_identify/object_identify.dart';
 import 'package:junction_frame/screens/place_selection_screen/place_selection_screen.dart';
+import 'package:junction_frame/screens/select_from_model/select_from_modal_page.dart';
 import 'package:junction_frame/screens/take_photo_screen/take_photo_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
+        name: 'SelectFromModalPage',
+        path: '/',
+        builder: (context, state) => const SelectFromModalPage()),
+    GoRoute(
       name: 'home',
-      path: '/',
+      path: '/home',
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(

@@ -1,5 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:junction_frame/screens/multiple_images_verification/mulitple_images_verification_connector.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/themes/colors.dart';
@@ -81,7 +82,18 @@ class _MultipleImagesVerificationState
   Widget renderBottomContainer(Function() goNextCallback) {
     return BottomContainer(
       children: [
-        ...TextWidgetsUtils.generateHeaderWithSubHedaer(),
+        const HeaderText('If informations was correctly identified go to the'),
+        const SizedBox(
+          height: 10,
+        ),
+        const HeaderText('next step.'),
+        const SizedBox(
+          height: 10,
+        ),
+        const SubHeaderText('If not change the input manualy.'),
+        const SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child:
@@ -169,7 +181,7 @@ class _MultipleImagesVerificationState
                     ])),
               ),
               renderBottomContainer(() {
-                // context.goNamed('place-selection'); TODO fix
+                context.goNamed('place-selection');
               }),
             ],
           ),

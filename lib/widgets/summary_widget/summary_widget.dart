@@ -80,7 +80,18 @@ class _SummaryWidgetState extends State<SummaryWidget> {
   Widget renderBottomContainer() {
     return BottomContainer(
       children: [
-        ...TextWidgetsUtils.generateHeaderWithSubHedaer(),
+        const HeaderText('If object was identified correctly go to the next'),
+        const SizedBox(
+          height: 10,
+        ),
+        const HeaderText('step.'),
+        const SizedBox(
+          height: 10,
+        ),
+        const SubHeaderText('If not change the input manualy. '),
+        const SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child:

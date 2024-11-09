@@ -7,7 +7,7 @@ class ObjectIdentify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ImageVerifier(
+    return ImageVerifier(
       namedPath: 'accept-inventory',
     );
   }
