@@ -21,37 +21,56 @@ class SummaryWidget extends StatefulWidget {
 
 class _SummaryWidgetState extends State<SummaryWidget> {
   bool isEditing = false;
+  List<TextEditingController> controllers = [];
 
-  Widget renderInputContent(
-      BuildContext context, bool isEditing, Inventory inventory) {
-    List<Widget> itemsToRender = [];
-
-    (inventory.properties ?? []).forEach((property) {
-      itemsToRender.add(InputItem(
-        title: property.field,
-        value: property.value,
-        isMultiline: true,
-        isEditing: isEditing,
-      ));
-
-      itemsToRender.add(const SizedBox(
-        height: 15,
-      ));
-    });
+  Widget renderInputContent(BuildContext context, bool isEditing,
+      Inventory inventory, Function(int) removeProperty) {
+    for (int i = 0; i < inventory.properties!.length; i++) {
+      controllers
+          .add(TextEditingController(text: inventory.properties![i].value));
+    }
 
     return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: kElevationToShadow[4],
-          borderRadius: const BorderRadius.all(Radius.circular(20))),
-      child: Column(
-        children: itemsToRender,
-      ),
-    );
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: kElevationToShadow[4],
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
+        child: ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          separatorBuilder: (context, index) => const SizedBox(
+            height: 15,
+          ),
+          itemCount: inventory.properties?.length ?? 0,
+          itemBuilder: (context, index) {
+            final property = inventory.properties![index];
+            if (isEditing) {
+              return InputItem(
+                controller: controllers[index],
+                titleIcon: IconButton(
+                    onPressed: () => removeProperty(index),
+                    icon: const Icon(
+                      Icons.cancel_sharp,
+                    )),
+                title: property.field,
+                value: property.value,
+                isMultiline: true,
+                isEditing: isEditing,
+              );
+            } else {
+              return InputItem(
+                title: property.field,
+                value: property.value,
+                isMultiline: true,
+                isEditing: isEditing,
+              );
+            }
+          },
+        ));
   }
 
-  Widget renderBottomContainer() {
+  Widget renderBottomContainer(Function() goNextCallback) {
     return BottomContainer(
       children: [
         const HeaderText('If object was identified correctly go to the next'),
@@ -80,9 +99,7 @@ class _SummaryWidgetState extends State<SummaryWidget> {
               height: 50,
             ),
             InversedButton(
-                title: "Next",
-                height: 50,
-                onPress: () => widget.goFurtherAction())
+                title: "Next", height: 50, onPress: () => goNextCallback())
           ]),
         )
       ],
@@ -106,7 +123,10 @@ class _SummaryWidgetState extends State<SummaryWidget> {
                     padding: const EdgeInsets.all(20),
                     child: Column(children: [
                       renderInputContent(
-                          context, isEditing, connector.inventory!),
+                          context,
+                          isEditing,
+                          connector.inventory!,
+                          (index) => connector.removeProperty(index)),
                       const SizedBox(
                         height: 20,
                       ),
@@ -116,7 +136,21 @@ class _SummaryWidgetState extends State<SummaryWidget> {
                       )
                     ])),
               ),
-              renderBottomContainer(),
+              renderBottomContainer(() {
+                var values =
+                    controllers.map((contr) => contr.value.text).toList();
+                List<Properties> properties = [];
+                var i = 0;
+
+                connector.inventory!.properties!.forEach((element) {
+                  properties
+                      .add(Properties(field: element.field, value: values[i]));
+                  i++;
+                });
+
+                connector.updateProperties(properties);
+                widget.goFurtherAction();
+              }),
             ],
           ),
         ),

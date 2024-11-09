@@ -21,7 +21,9 @@ class Inventory {
         id: json["id"],
         comments: json["comments"],
         buildingId: json["buildingId"],
-        files: (json['files'] as List).map((e) => e as String).toList(),
+        files: json['files'] == null
+            ? []
+            : (json['files'] as List).map((e) => e as String).toList(),
         localization: json['localization'] != null
             ? Localization.fromJson(json['localization'])
             : null,

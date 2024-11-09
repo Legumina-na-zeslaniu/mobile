@@ -47,7 +47,8 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
     try {
       await _cameraController!.setFlashMode(FlashMode.off);
       final picture = await _cameraController!.takePicture();
-      print(picture);
+
+      widget.onImageSubmitted(picture);
     } catch (e) {
       debugPrint('Error while taking picture: $e');
     }

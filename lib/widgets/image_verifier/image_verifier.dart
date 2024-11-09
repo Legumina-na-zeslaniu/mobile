@@ -42,7 +42,8 @@ class ImageVerifier extends StatelessWidget {
       await CustomImagePicker.pickImage((image) => onSubmit(image));
     }
 
-    Widget renderBottomContainer(Function() callback, XFile selectedFile) {
+    Widget renderBottomContainer(
+        Function() callback, XFile selectedFile, Function() goBackCallback) {
       return BottomContainer(
         children: [
           ...(bottomContainerTexts == null)
@@ -55,7 +56,7 @@ class ImageVerifier extends StatelessWidget {
                 children: [
                   LightButton(
                     title: 'Back',
-                    onPress: () => print('Go Back'),
+                    onPress: () => goBackCallback(),
                     height: 50,
                   ),
                   if (allowRevalidation)
@@ -86,7 +87,7 @@ class ImageVerifier extends StatelessWidget {
           children: [
             renderImage(connector.selectedInventoryTypeImage),
             renderBottomContainer(() => context.goNamed(namedPath),
-                connector.selectedInventoryTypeImage),
+                connector.selectedInventoryTypeImage, () => context.pop()),
           ],
         ),
       )),

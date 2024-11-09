@@ -7,10 +7,12 @@ class InputItem extends StatelessWidget {
   final String value;
   final bool isEditing;
   final bool isMultiline;
+  final Widget? titleIcon;
   final TextEditingController? controller;
 
   const InputItem(
       {super.key,
+      this.titleIcon,
       this.isMultiline = false,
       required this.title,
       required this.value,
@@ -22,10 +24,16 @@ class InputItem extends StatelessWidget {
     var controller = this.controller ?? TextEditingController(text: value);
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Text(
-        title,
-        textAlign: TextAlign.left,
-        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            textAlign: TextAlign.left,
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          ),
+          if (titleIcon != null) titleIcon!,
+        ],
       ),
       TextField(
         controller: controller,

@@ -19,7 +19,7 @@ class AdditionalTakePhotoScreen extends StatelessWidget {
             cameras: cameras,
             onImageSubmitted: (file) => {
               vm.onImageSubmit(
-                  file, () => context.goNamed('multiple-object-identify'))
+                  file, () => context.pushNamed('multiple-object-identify'))
             },
           );
         });

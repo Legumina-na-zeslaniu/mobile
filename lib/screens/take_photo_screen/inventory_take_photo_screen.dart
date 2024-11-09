@@ -18,7 +18,7 @@ class InventoryTakePhotoScreen extends StatelessWidget {
           return TakePhotoScreen(
             cameras: cameras,
             onImageSubmitted: (file) => {
-              vm.onImageSubmit(file, () => context.goNamed('object-identify'))
+              vm.onImageSubmit(file, () => context.pushNamed('object-identify'))
             },
           );
         });
