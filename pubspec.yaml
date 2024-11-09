@@ -15,6 +15,7 @@ dependencies:
   go_router: ^14.4.1
   graphql_flutter: ^5.2.0-beta.7
   image_picker: ^1.1.2
+  overlay_loading_progress: ^1.0.1
   permission_handler: ^11.3.1
 
 dev_dependencies:

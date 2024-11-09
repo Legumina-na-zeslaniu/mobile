@@ -14,15 +14,18 @@ mutation ClassifyObject($file: Upload!) {
 """;
 
 const Query upsertInventoryQuery = r"""
-mutation UpsertInventory($input: InventoryUpsertInput!) {
-  upsertInventory(input: $input) {
-    id,
-    files,
+mutation ui($files: [Upload!], $properties: [PropertiesInput!], ){
+  upsertInventory(input: {
+    properties: $properties,
+    files: $files
+  }) {
+    id
+    comments
     properties {
       field
       value
     }
-    comments
+      files
   }
 }
 """;

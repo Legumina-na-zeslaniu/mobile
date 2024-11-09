@@ -84,9 +84,9 @@ class ImageVerifier extends StatelessWidget {
         bottom: false,
         child: Stack(
           children: [
+            renderImage(connector.selectedInventoryTypeImage),
             renderBottomContainer(() => context.goNamed(namedPath),
                 connector.selectedInventoryTypeImage),
-            renderImage(connector.selectedInventoryTypeImage),
           ],
         ),
       )),

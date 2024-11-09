@@ -34,6 +34,7 @@ class UploadImagesAction extends ReduxAction<AppState> {
       throw Exception;
     });
 
+    print(result);
     if (result.data != null) {
       Inventory inventory = Inventory.fromJson(result.data!['classifyObject']);
 

@@ -19,36 +19,22 @@ class UpsertImagesAction extends ReduxAction<AppState> {
   Future<AppState> reduce() async {
     store.dispatch(ShowLoadingAction(dataLoadState: DataLoadState.loadRequest));
 
-    print("NIGRO");
-
     Inventory selectedInventory = store.state.selectedInventory!;
     var b0 = store.state.mainInventoryImage!.readAsBytes();
     var b1 = additionalInformationData.readAsBytes();
     http.MultipartFile mpf0 = http.MultipartFile.fromBytes('file', await b0);
-    http.MultipartFile mpf1 = http.MultipartFile.fromBytes('file', await b1);
+    http.MultipartFile mpf1 = http.MultipartFile.fromBytes('files', await b1);
 
     final graphql.MutationOptions options = graphql.MutationOptions(
       document: graphql.gql(upsertInventoryQuery),
       variables: {
-        "input": {
-          "buildingId": selectedInventory.buildingId ?? '-',
-          "comments": selectedInventory.comments ?? "",
-          "id": selectedInventory.id ?? "_id",
-          "files": [mpf0, mpf1],
-          "localization": selectedInventory.localization == null
-              ? null
-              : {
-                  'x': selectedInventory.localization!.x,
-                  'y': selectedInventory.localization!.y,
-                  'z': selectedInventory.localization!.z
-                },
-          "properties": store.state.selectedInventory!.properties?.map((e) {
-            return {
-              "field": e.field,
-              "value": e.value,
-            };
-          }).toList(),
-        }
+        "files": mpf0,
+        "properties": store.state.selectedInventory!.properties?.map((e) {
+          return {
+            "field": e.field,
+            "value": e.value,
+          };
+        }).toList(),
       },
     );
 

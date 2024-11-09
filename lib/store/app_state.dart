@@ -10,10 +10,12 @@ class AppState {
   final XFile? additionalInformationImage;
   final Inventory? selectedInventory;
   final DataLoadState? dataLoadState;
+  final String? selectedBuildingId;
 
   AppState(
       {this.selectedInventory,
       this.dataLoadState,
+      this.selectedBuildingId,
       this.additionalInformationImage,
       this.mainInventoryImage});
 
@@ -26,9 +28,11 @@ class AppState {
   AppState copyWith(
       {Inventory? selectedInventory,
       final XFile? mainInventoryImage,
+      final String? selectedBuildingId,
       final XFile? additionalInformationImage,
       DataLoadState? dataLoadState}) {
     return AppState(
+        selectedBuildingId: selectedBuildingId ?? this.selectedBuildingId,
         dataLoadState: dataLoadState ?? this.dataLoadState,
         selectedInventory: selectedInventory ?? this.selectedInventory,
         mainInventoryImage: mainInventoryImage ?? this.mainInventoryImage,
