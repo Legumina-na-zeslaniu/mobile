@@ -1,14 +1,13 @@
-import 'dart:io';
-
 import 'package:async_redux/async_redux.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/utils/types/function.dart';
+import 'package:junction_frame/widgets/added_picture_widgets/added_pictures_widget.dart';
 import 'package:junction_frame/widgets/bottom_container.dart';
 import 'package:junction_frame/widgets/buttons.dart';
 import 'package:junction_frame/widgets/input_item.dart';
 import 'package:junction_frame/widgets/summary_widget/summary_widget_connector.dart';
+import 'package:junction_frame/widgets/text_widgets.dart';
 
 class SummaryWidget extends StatefulWidget {
   final Funct goFurtherAction;
@@ -81,20 +80,7 @@ class _SummaryWidgetState extends State<SummaryWidget> {
   Widget renderBottomContainer() {
     return BottomContainer(
       children: [
-        const Text(
-          'If you want to upload this photo to identify and',
-          textAlign: TextAlign.center,
-          softWrap: true,
-        ),
-        const Text(
-          ' object choose “Next”. ',
-          textAlign: TextAlign.center,
-          softWrap: true,
-        ),
-        const Text(
-          'If not click “Back” and take a new picture.',
-          textAlign: TextAlign.center,
-        ),
+        ...TextWidgetsUtils.generateHeaderWithSubHedaer(),
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child:
@@ -118,22 +104,6 @@ class _SummaryWidgetState extends State<SummaryWidget> {
     );
   }
 
-  Widget renderAddedPictures(List<XFile> images) {
-    return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: kElevationToShadow[4],
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
-        child: Column(children: [
-          const Text('Added pictures'),
-          GridView.extent(maxCrossAxisExtent: 200, shrinkWrap: true, children: [
-            ...images.map((image) => Image.file(File(image.path)))
-          ]),
-        ]));
-  }
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, SummaryWidgetConnector>(
@@ -148,13 +118,13 @@ class _SummaryWidgetState extends State<SummaryWidget> {
             children: [
               SingleChildScrollView(
                 child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(children: [
                       renderInputContent(context, isEditing),
                       const SizedBox(
                         height: 20,
                       ),
-                      renderAddedPictures(connector.images),
+                      const AddedPicturesWidget(),
                       const SizedBox(
                         height: 180,
                       )

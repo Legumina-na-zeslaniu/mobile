@@ -1,13 +1,13 @@
-import 'dart:io';
-
 import 'package:async_redux/async_redux.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:junction_frame/screens/multiple_images_verification/mulitple_images_verification_connector.dart';
 import 'package:junction_frame/store/app_state.dart';
 import 'package:junction_frame/themes/colors.dart';
+import 'package:junction_frame/widgets/added_picture_widgets/added_pictures_widget.dart';
 import 'package:junction_frame/widgets/bottom_container.dart';
+import 'package:junction_frame/widgets/buttons.dart';
 import 'package:junction_frame/widgets/input_item.dart';
+import 'package:junction_frame/widgets/text_widgets.dart';
 
 class MultipleImagesVerification extends StatefulWidget {
   const MultipleImagesVerification({super.key});
@@ -81,54 +81,22 @@ class _MultipleImagesVerificationState
   Widget renderBottomContainer(Function() goNextCallback) {
     return BottomContainer(
       children: [
-        const Text(
-          'If you want to upload this photo to identify and',
-          textAlign: TextAlign.center,
-          softWrap: true,
-        ),
-        const Text(
-          ' object choose “Next”. ',
-          textAlign: TextAlign.center,
-          softWrap: true,
-        ),
-        const Text(
-          'If not click “Back” and take a new picture.',
-          textAlign: TextAlign.center,
-        ),
+        ...TextWidgetsUtils.generateHeaderWithSubHedaer(),
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Container(
+            LightButton(
               height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: CustomColors.orange, width: 2)),
-              child: RawMaterialButton(
-                fillColor: Colors.white,
-                onPressed: () => setState(
-                  () {
-                    isEditing = !isEditing;
-                  },
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: const Text('Change',
-                    style: TextStyle(color: CustomColors.orange)),
+              title: 'Change',
+              onPress: () => setState(
+                () {
+                  isEditing = !isEditing;
+                },
               ),
             ),
-            SizedBox(
-              height: 50,
-              child: RawMaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  fillColor: CustomColors.orange,
-                  onPressed: () => goNextCallback(),
-                  child: const Text(
-                    'Next',
-                    style: TextStyle(color: Colors.white),
-                  )),
-            )
+            InversedButton(
+                title: 'Next', height: 50, onPress: () => goNextCallback())
           ]),
         )
       ],
@@ -160,28 +128,12 @@ class _MultipleImagesVerificationState
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: const InputItem(
         isMultiline: true,
-        title: 'Comment',
+        title: 'Comments',
         isEditing: true,
         value:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       ),
     );
-  }
-
-  Widget renderAddedPictures(List<XFile> images) {
-    return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: kElevationToShadow[4],
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
-        child: Column(children: [
-          const Text('Added pictures'),
-          GridView.extent(maxCrossAxisExtent: 200, shrinkWrap: true, children: [
-            ...images.map((image) => Image.file(File(image.path)))
-          ]),
-        ]));
   }
 
   @override
@@ -206,7 +158,7 @@ class _MultipleImagesVerificationState
                       const SizedBox(
                         height: 20,
                       ),
-                      renderAddedPictures(connector.images),
+                      const AddedPicturesWidget(),
                       const SizedBox(
                         height: 20,
                       ),

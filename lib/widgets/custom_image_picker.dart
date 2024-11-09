@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junction_frame/store/app_state.dart';
 

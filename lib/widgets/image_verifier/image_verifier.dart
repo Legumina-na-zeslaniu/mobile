@@ -10,6 +10,7 @@ import 'package:junction_frame/widgets/bottom_container.dart';
 import 'package:junction_frame/widgets/buttons.dart';
 import 'package:junction_frame/widgets/custom_image_picker.dart';
 import 'package:junction_frame/widgets/image_verifier/imge_verifier_connector.dart';
+import 'package:junction_frame/widgets/text_widgets.dart';
 
 class ImageVerifier extends StatelessWidget {
   final bool allowRevalidation;
@@ -20,11 +21,11 @@ class ImageVerifier extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget renderImage(XFile selectedFiele) {
-      return Center(
+      return SizedBox(
+        height: double.infinity,
+        width: double.infinity,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Image.file(File(selectedFiele.path), fit: BoxFit.cover, width: 250),
-          const SizedBox(height: 24),
-          Text(selectedFiele.name)
         ]),
       );
     }
@@ -40,26 +41,7 @@ class ImageVerifier extends StatelessWidget {
         Function(List<XFile>, BuildContext) onImagesSelected) {
       return BottomContainer(
         children: [
-          const Text('If you want to upload this photo to identify and',
-              textAlign: TextAlign.center,
-              softWrap: true,
-              style: TextStyle(fontWeight: FontWeight.w600)),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(' object choose “Next”. ',
-              textAlign: TextAlign.center,
-              softWrap: true,
-              style: TextStyle(fontWeight: FontWeight.w600)),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text('If not click “Back” and take a new picture.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w300)),
-          const SizedBox(
-            height: 10,
-          ),
+          ...TextWidgetsUtils.generateHeaderWithSubHedaer(),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: Row(

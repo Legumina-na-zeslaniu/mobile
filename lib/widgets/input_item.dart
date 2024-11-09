@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:junction_frame/themes/colors.dart';
 
 class InputItem extends StatelessWidget {
   final String title;
@@ -18,18 +19,36 @@ class InputItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = TextEditingController(text: value);
 
-    return Column(children: [
-      Text(title),
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Text(
+        title,
+        textAlign: TextAlign.left,
+        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+      ),
       TextField(
         controller: controller,
         enabled: isEditing,
         keyboardType: isMultiline ? TextInputType.multiline : null,
         maxLines: isMultiline ? null : 1,
+        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
         decoration: const InputDecoration(
             labelText: '',
             hintText: '',
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)))),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(color: CustomColors.orange)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(color: CustomColors.orange)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(color: CustomColors.orange)),
+            disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(color: CustomColors.orange))),
+      ),
+      const SizedBox(
+        height: 3,
       )
     ]);
   }
