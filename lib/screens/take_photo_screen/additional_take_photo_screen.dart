@@ -17,9 +17,9 @@ class AdditionalTakePhotoScreen extends StatelessWidget {
         builder: (BuildContext context, _Connector vm) {
           return TakePhotoScreen(
             cameras: cameras,
-            onImageSubmitted: (file) => {
+            onImageSubmitted: (file) {
               vm.onImageSubmit(
-                  file, () => context.pushNamed('multiple-object-identify'))
+                  file, () => context.pushNamed('multiple-object-identify'));
             },
           );
         });
@@ -35,6 +35,6 @@ class _Connector {
     return _Connector(
         onImageSubmit: (file, callback) => store
             .dispatchAndWait(SelectAdditionalInformationImageAction(file: file))
-            .then((value) => {callback.call()}));
+            .then((value) => callback()));
   }
 }

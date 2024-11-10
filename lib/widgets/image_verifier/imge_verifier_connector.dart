@@ -5,7 +5,9 @@ import 'package:junction_frame/store/app_state.dart';
 class ImageVerifierConnector {
   final XFile selectedInventoryTypeImage;
 
-  ImageVerifierConnector({required this.selectedInventoryTypeImage});
+  ImageVerifierConnector({
+    required this.selectedInventoryTypeImage,
+  });
 
   static fromStore(Store<AppState> store) {
     return ImageVerifierConnector(

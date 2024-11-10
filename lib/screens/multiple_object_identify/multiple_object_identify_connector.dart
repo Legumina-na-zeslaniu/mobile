@@ -5,21 +5,17 @@ import 'package:junction_frame/store/actions/upsert_images_action.dart';
 import 'package:junction_frame/store/app_state.dart';
 
 class MultipleObjectIdentifyConnector {
-  final XFile? selectedInventoryTypeImage;
   final Function(XFile, Function()) onSubmit;
-  MultipleObjectIdentifyConnector(
-      {required this.selectedInventoryTypeImage, required this.onSubmit});
+  MultipleObjectIdentifyConnector({required this.onSubmit});
 
   static fromStore(
     Store<AppState> store,
   ) {
-    return MultipleObjectIdentifyConnector(
-        selectedInventoryTypeImage: store.state.additionalInformationImage,
-        onSubmit: (file, callback) {
-          return store
-              .dispatchAndWait(UploadImagesSecondAction(
-                  file: store.state.additionalInformationImage!))
-              .then((value) => {callback.call()});
-        });
+    return MultipleObjectIdentifyConnector(onSubmit: (file, callback) {
+      return store
+          .dispatchAndWait(UploadImagesSecondAction(
+              file: store.state.additionalInformationImage!))
+          .then((value) => {callback.call()});
+    });
   }
 }

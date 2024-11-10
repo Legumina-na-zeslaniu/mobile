@@ -93,7 +93,7 @@ class _Connector {
 
   static _Connector fromStore(Store<AppState> store) {
     return _Connector(
-        buildingId: store.state.selectedBuildingId!,
+        buildingId: store.state.selectedBuildingId ?? '',
         submitData: (Function() onDataSubmittedCallback) {
           store.dispatchAndWait(UpsertImagesAction()).then((_) {
             onDataSubmittedCallback();
