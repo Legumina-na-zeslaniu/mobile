@@ -1,5 +1,7 @@
 # Junction AssetEase
 
+PITCH AND PROJECT OVERVIEW -> https://www.youtube.com/watch?v=qEvLtoaOTN0
+
 ## Overview
 
 Managing building assets can be complex, time-consuming, and prone to errors. In today's fast-paced world, companies need efficient, reliable solutions to streamline operations and improve decision-making.
