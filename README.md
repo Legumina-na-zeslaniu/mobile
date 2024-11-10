@@ -67,3 +67,12 @@ Object modification shown on BIM models
 - Multi image support for advanced tag detection and merging.
 - Upstream inventory updates.
 - Responsive and Easy-To-Go system
+
+## Other links
+
+Due to the nature of mobile apps it cannot be hosted and presented real time.
+However below links for backend and micro frontend is attached.
+
+Backend -> https://junction.rabbithole.carrotly.tech/graphql
+
+MicroFronted (which is only an iframe for the mobile app) -> https://junction-front.rabbithole.carrotly.tech
